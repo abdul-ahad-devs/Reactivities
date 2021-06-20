@@ -3,6 +3,7 @@ import axios from 'axios';
 import { List, Container } from 'semantic-ui-react'
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
+import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 
 function App() {
 
@@ -28,16 +29,8 @@ function App() {
   return (
     <>
       <NavBar />
-      <Container style={{marginTop: '7em'}}>
-        <List>
-          {
-            activities && activities.map((activity) => {
-              return (
-                <List.Item key={activity.id}>{activity.title}</List.Item>
-              )
-            })
-          }
-        </List>
+      <Container style={{ marginTop: '7em' }}>
+        <ActivityDashboard activities={activities} />
       </Container>
     </>
   );
