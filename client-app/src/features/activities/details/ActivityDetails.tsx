@@ -1,32 +1,33 @@
-import React from 'react';
-import { Card, Icon, Image, Button } from 'semantic-ui-react';
-import { Activity } from '../../../app/models/activity';
+import { observer } from 'mobx-react-lite';
+import { Card, Image, Button } from 'semantic-ui-react';
+import Loading from '../../../app/layout/Loading';
+import { useStore } from '../../../app/store/store';
 
-interface Props {
-    activity: Activity;
-    cancelActivity: () => void;
-    openForm: (id: string) => void;
+const ActivityDetails = () => {
 
-}
+    const { activityStore } = useStore();
 
-const ActivityDetails = ({ activity, cancelActivity, openForm }: Props) => {
+    const { selectedActivity, openForm, cancelSelectedActivity } = activityStore;
+
+    if (!selectedActivity) {
+        return <Loading />
+    }
     return (
         <Card fluid>
-            <Image src={`/assets/categoryImages/${activity.category}.jpg`} wrapped ui={false} />
+            <Image src={`/assets/categoryImages/${selectedActivity.category}.jpg`} wrapped ui={false} />
             <Card.Content>
-                <Card.Header>{activity.title}</Card.Header>
+                <Card.Header>{selectedActivity.title}</Card.Header>
                 <Card.Meta>
-                    <span className='date'>{activity.date}</span>
+                    <span className='date'>{selectedActivity.date}</span>
                 </Card.Meta>
                 <Card.Description>
-                    {activity.description}
+                    {selectedActivity.description}
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths="2">
-                    <Button onClick={() => openForm(activity.id)} color="blue" content="Edit" basic />
-                    <Button color="grey" content="Cancel" basic onClick={() => cancelActivity()} />
-
+                    <Button onClick={() => openForm(selectedActivity.id)} color="blue" content="Edit" basic />
+                    <Button color="grey" content="Cancel" basic onClick={() => cancelSelectedActivity()} />
                 </Button.Group>
             </Card.Content>
         </Card>
@@ -34,4 +35,4 @@ const ActivityDetails = ({ activity, cancelActivity, openForm }: Props) => {
 
 }
 
-export default ActivityDetails;
+export default observer(ActivityDetails);
