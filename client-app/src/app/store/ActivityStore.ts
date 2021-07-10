@@ -48,13 +48,17 @@ class ActivityStore {
     let activity = this.getActivity(id);
     if (activity) {
       this.selectedActivity = activity;
+      return activity;
     } else {
       this.loadingInitial = true;
       try {
         activity = await agents.Activities.details(id);
         this.setActivity(activity);
-        this.selectedActivity = activity;
+        runInAction(() => {
+          this.selectedActivity = activity;
+        });
         this.setLoadingInitital(false);
+        return activity;
       } catch (err) {
         console.log(err);
         this.setLoadingInitital(false);
