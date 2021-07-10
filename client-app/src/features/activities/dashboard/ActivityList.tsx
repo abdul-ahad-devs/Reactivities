@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { SyntheticEvent, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Item, Segment, Button, Label } from 'semantic-ui-react';
 import { useStore } from '../../../app/store/store';
 
@@ -47,7 +48,7 @@ const ActivityList = () => {
                                 </Item.Description>
                                 <Item.Extra>
                                     <Label basic content={activity.category} />
-                                    <Button floated="right" content="view" color="blue" onClick={() => {
+                                    <Button as={NavLink} to={`activities/${activity.id}`} floated="right" content="view" color="blue" onClick={() => {
                                         loadActivityDetails(activity.id)
                                     }} />
                                     <Button loading={loading && target === activity.id} name={activity.id} onClick={(event) => handleDeleteActivity(event, activity.id)} floated="right" content="Delete" color="red" />
