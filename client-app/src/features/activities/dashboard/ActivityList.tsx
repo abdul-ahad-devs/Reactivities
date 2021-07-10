@@ -8,7 +8,7 @@ const ActivityList = () => {
 
     const { activityStore } = useStore();
 
-    const { activitiesByDate, loadActivityDetails, loading, deleteActivity } = activityStore;
+    const { activitiesByDate, loading, deleteActivity } = activityStore;
 
     const [target, setTarget] = useState('');
 
@@ -48,9 +48,7 @@ const ActivityList = () => {
                                 </Item.Description>
                                 <Item.Extra>
                                     <Label basic content={activity.category} />
-                                    <Button as={NavLink} to={`activities/${activity.id}`} floated="right" content="view" color="blue" onClick={() => {
-                                        loadActivityDetails(activity.id)
-                                    }} />
+                                    <Button as={NavLink} to={`activities/${activity.id}`} floated="right" content="view" color="blue" />
                                     <Button loading={loading && target === activity.id} name={activity.id} onClick={(event) => handleDeleteActivity(event, activity.id)} floated="right" content="Delete" color="red" />
                                 </Item.Extra>
                             </Item.Content>

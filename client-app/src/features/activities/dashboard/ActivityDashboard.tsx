@@ -11,8 +11,6 @@ const ActivityDashboard = () => {
 
     const { activityStore } = useStore();
 
-    const { selectedActivity, editMode } = activityStore;
-
     // THIS USEEFFECT IS RESPONSIBLE FOR FETCHING ACTIVITES FROM BACKEND
     useEffect(() => {
         activityStore.loadActivities();
@@ -22,15 +20,13 @@ const ActivityDashboard = () => {
         return <Loading inverted={true} content="Loading App" />
     }
 
-
     return (
         <Grid>
             <Grid.Column width="10">
                 <ActivityList />
             </Grid.Column>
             <Grid.Column width="6">
-                {selectedActivity && !editMode && <ActivityDetails />}
-                {editMode && <ActivityForm />}
+               <h2> Filters go there</h2>
             </Grid.Column>
         </Grid>
     )

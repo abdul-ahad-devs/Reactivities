@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { request } from "http";
 import { BASE_URL } from "../../constants/defaulttValues";
 import { Activity } from "../models/activity";
 

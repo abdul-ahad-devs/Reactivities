@@ -7,7 +7,7 @@ const ActivityForm = () => {
 
     const { activityStore } = useStore();
 
-    const { selectedActivity, closeForm, loading, createActivity, updateActivity } = activityStore;
+    const { selectedActivity, loading, createActivity, updateActivity } = activityStore;
 
     // ?? optional parameter
     const initialState = selectedActivity ?? {
@@ -43,7 +43,7 @@ const ActivityForm = () => {
                 <Form.Input placeholder="City" value={activity.city} name="city" onChange={handleInputChange} />
                 <Form.Input placeholder="Venue" value={activity.venue} name="venue" onChange={handleInputChange} />
                 <Button loading={loading} floated="right" positive type="submit" content="Submit" />
-                <Button floated="right" type="button" content="Cancel" onClick={() => closeForm()} />
+                <Button floated="right" type="button" content="Cancel" />
             </Form>
         </Segment>
     );

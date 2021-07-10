@@ -1,4 +1,4 @@
-import { makeAutoObservable, makeObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agents from "../api/agent";
 import { Activity } from "../models/activity";
 import { v4 as uuid } from "uuid";
@@ -31,11 +31,11 @@ class ActivityStore {
 
   // LOADING ACTIVITIES FROM THE API
   loadActivities = async () => {
+    this.loadingInitial = true;
     try {
       const activities = await agents.Activities.list();
       activities.forEach((activity) => {
-        activity.date = activity.date.split("T")[0];
-        this.activityRegistry.set(activity.id, activity);
+        this.setActivity(activity);
       });
       this.setLoadingInitital(false);
     } catch (error) {
@@ -44,8 +44,31 @@ class ActivityStore {
     }
   };
 
-  loadActivityDetails = async (selectedId: string) => {
-    this.selectedActivity = this.activityRegistry.get(selectedId);
+  loadActivity = async (id: string) => {
+    let activity = this.getActivity(id);
+    if (activity) {
+      this.selectedActivity = activity;
+    } else {
+      this.loadingInitial = true;
+      try {
+        activity = await agents.Activities.details(id);
+        this.setActivity(activity);
+        this.selectedActivity = activity;
+        this.setLoadingInitital(false);
+      } catch (err) {
+        console.log(err);
+        this.setLoadingInitital(false);
+      }
+    }
+  };
+
+  private setActivity = (activity: Activity) => {
+    activity.date = activity.date.split("T")[0];
+    this.activityRegistry.set(activity.id, activity);
+  };
+
+  private getActivity = (id: string) => {
+    return this.activityRegistry.get(id);
   };
 
   createActivity = async (activity: Activity) => {
@@ -92,27 +115,11 @@ class ActivityStore {
       runInAction(() => {
         this.activityRegistry.delete(deletingId);
         this.loading = false;
-        if (this.selectedActivity?.id === deletingId) {
-          this.cancelSelectedActivity();
-        }
       });
     } catch (error) {
       console.log(error);
       runInAction(() => (this.loading = false));
     }
-  };
-
-  cancelSelectedActivity = () => {
-    this.selectedActivity = undefined;
-  };
-
-  openForm = (id?: string) => {
-    id ? this.loadActivityDetails(id) : this.cancelSelectedActivity();
-    this.editMode = true;
-  };
-
-  closeForm = () => {
-    this.editMode = false;
   };
 }
 
