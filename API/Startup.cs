@@ -11,6 +11,7 @@ using Application.Activities;
 using MediatR;
 using Application.Core;
 using API.Extensions;
+using FluentValidation.AspNetCore;
 
 namespace API
 {
@@ -27,7 +28,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(config => {
+                config.RegisterValidatorsFromAssemblyContaining<Create>();
+            });
             // MAKING OUR STARTUP FILE NEAT AND TIDY BY ADDING ALL THE SERVICES IN A SEPARATE LOCATION
             services.AddApplicationServices(_config);
 
